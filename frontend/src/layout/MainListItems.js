@@ -21,9 +21,10 @@ import TextsmsIcon from '@material-ui/icons/Textsms';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import BurstModeIcon from '@material-ui/icons/BurstMode';
 import InstagramIcon from '@material-ui/icons/Instagram';
-import ChatIcon from '@material-ui/icons/Chat';
+//import ChatIcon from '@material-ui/icons/Chat';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import SubjectIcon from '@material-ui/icons/Subject';
+import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 
 import { i18n } from "../translate/i18n";
 import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
@@ -120,11 +121,11 @@ const MainListItems = (props) => {
         primary={i18n.t("mainDrawer.listItems.quickAnswers")}
         icon={<QuestionAnswerOutlinedIcon />}
       />
-      <ListItemLink
+      {/* <ListItemLink
               to="/ZDGChatbot"
               primary={i18n.t("mainDrawer.listItems.ZDGChatbot")}
         icon={<ChatIcon />}
-      />
+      /> */}
       <ListItemLink
               to="/ZDGAgendamento"
               primary={i18n.t("mainDrawer.listItems.ZDGAgendamento")}
@@ -144,6 +145,16 @@ const MainListItems = (props) => {
               to="/ZDGMedia"
               primary={i18n.t("mainDrawer.listItems.ZDGMedia")}
               icon={<BurstModeIcon />}
+      />
+      <ListItemLink
+              to="/ZDGMedia2"
+              primary={i18n.t("mainDrawer.listItems.ZDGMedia2")}
+              icon={<BurstModeIcon />}
+      />
+      <ListItemLink
+              to="/ZDGMedia3"
+              primary={i18n.t("mainDrawer.listItems.ZDGMedia3")}
+              icon={<RecordVoiceOverIcon />}
       />
       <ListItemLink
               to="/ZDGGroups"

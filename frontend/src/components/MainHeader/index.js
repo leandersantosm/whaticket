@@ -7,7 +7,6 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 		padding: "0px 6px 6px 6px",
-		backgroundColor: theme.palette.background.default
 	},
 }));
 

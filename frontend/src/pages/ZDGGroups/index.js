@@ -20,12 +20,11 @@ import LockIcon from '@material-ui/icons/Lock';
 import SendIcon from '@material-ui/icons/Send';
 import StarsIcon from '@material-ui/icons/Stars';
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/zdgGroups',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -33,9 +32,8 @@ const init = {
 };
 
 const init2 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgGroupsDescription',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -43,9 +41,8 @@ const init2 = {
   };
 
 const init3 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgGroupsCreate',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -53,9 +50,8 @@ const init3 = {
   };
 
 const init4 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgGroupsMessage',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -63,9 +59,8 @@ const init4 = {
   };
 
 const init5 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgOpenGroup',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -73,9 +68,8 @@ const init5 = {
   };
 
 const init6 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgCloseGroup',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -83,9 +77,8 @@ const init6 = {
   };
 
 const init7 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgNASA',
-	port: 8080,
 	method: 'POST',
 	headers: {
 	  'content-type': 'application/json; charset=utf-8'
@@ -154,8 +147,7 @@ async function zdgNASA (newMessAgeGroupNasa, iD, token) {
 }
 
 const initGet = {
-	host: 'localhost',
-	port: 8080,
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/whatsappzdg'
   };
   
@@ -430,7 +422,7 @@ const ZDGGroups = () => {
 					name="titulo" 
 					value={inputs.titulo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="Novo título para os grupos"
@@ -444,7 +436,7 @@ const ZDGGroups = () => {
 					name="descricao" 
 					value={inputs.descricao || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="Nova descrição para os grupos"
@@ -458,7 +450,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>
@@ -484,7 +476,7 @@ const ZDGGroups = () => {
 					name="tituloNovo" 
 					value={inputs.tituloNovo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth					
 					margin="dense"
 					placeholder="Título para o novo grupo"
@@ -498,7 +490,7 @@ const ZDGGroups = () => {
 					name="contatoGrupo" 
 					value={inputs.contatoGrupo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth					
 					margin="dense"
 					placeholder="Título para o novo grupo"
@@ -512,7 +504,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>
@@ -538,7 +530,7 @@ const ZDGGroups = () => {
 					name="abrirGrupo" 
 					value={inputs.abrirGrupo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth					
 					margin="dense"
 					placeholder="Escreva ABRIR para abrir seus GRUPOS"
@@ -552,7 +544,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>
@@ -578,7 +570,7 @@ const ZDGGroups = () => {
 					name="fecharGrupo" 
 					value={inputs.fecharGrupo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth					
 					margin="dense"
 					placeholder="Escreva FECHAR para abrir seus GRUPOS"
@@ -592,7 +584,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>
@@ -618,7 +610,7 @@ const ZDGGroups = () => {
 					name="mensagemGrupo" 
 					value={inputs.mensagemGrupo || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth	
 					multiline				
 					margin="dense"
@@ -633,7 +625,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>
@@ -662,7 +654,7 @@ const ZDGGroups = () => {
 					name="mensagemGrupoNASA" 
 					value={inputs.mensagemGrupoNASA || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth	
 					multiline				
 					margin="dense"
@@ -677,7 +669,7 @@ const ZDGGroups = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>

@@ -9,12 +9,11 @@ import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/syncMessage',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -40,8 +39,7 @@ async function ZDGSender(limit, iD, token) {
 }
 
 const init2 = {
-	host: 'localhost',
-	port: 8080,
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/whatsappzdg'
   };
   
@@ -151,7 +149,7 @@ const ZDGHistorico = () => {
 					name="limite" 
 					value={inputs.limite || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="Quantidade de mensagens por conversa"
@@ -166,7 +164,7 @@ const ZDGHistorico = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 				/>

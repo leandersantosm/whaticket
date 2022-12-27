@@ -15,6 +15,8 @@ import QuickAnswers from "../pages/QuickAnswers/";
 import Queues from "../pages/Queues/";
 import ZDG from "../pages/ZDG/";
 import ZDGMedia from "../pages/ZDGMedia/";
+import ZDGMedia2 from "../pages/ZDGMedia2/";
+import ZDGMedia3 from "../pages/ZDGMedia3/";
 import ZDGGroups from "../pages/ZDGGroups/";
 import InstaDirect from "../pages/InstaDirect/";
 import SMS from "../pages/SMS/";
@@ -62,6 +64,8 @@ const Routes = () => {
               <Route exact path="/ZDGAgendamento" component={ZDGAgendamento} isPrivate />
               <Route exact path="/ZDG" component={ZDG} isPrivate />
               <Route exact path="/ZDGMedia" component={ZDGMedia} isPrivate />
+              <Route exact path="/ZDGMedia2" component={ZDGMedia2} isPrivate />
+              <Route exact path="/ZDGMedia3" component={ZDGMedia3} isPrivate />
               <Route exact path="/ZDGGroups" component={ZDGGroups} isPrivate />
               <Route exact path="/InstaDirect" component={InstaDirect} isPrivate />
               <Route exact path="/SMS" component={SMS} isPrivate />

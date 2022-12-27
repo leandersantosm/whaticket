@@ -5,7 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import App from "./App";
 
 ReactDOM.render(
-	<CssBaseline  >
+	<CssBaseline>
 		<App />
 	</CssBaseline>,
 	document.getElementById("root")

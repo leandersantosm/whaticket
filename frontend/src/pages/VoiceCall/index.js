@@ -8,12 +8,11 @@ import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/makeVoiceCall',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -146,7 +145,7 @@ const VoiceCall = () => {
 					name="user" 
 					value={inputs.user || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					multiline
 					margin="dense"
@@ -161,7 +160,7 @@ const VoiceCall = () => {
 					name="message" 
 					value={inputs.message || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					multiline
 					margin="dense"
@@ -176,7 +175,7 @@ const VoiceCall = () => {
 					name="from" 
 					value={inputs.from || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="Pedrinho da NASA"

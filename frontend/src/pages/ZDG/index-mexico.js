@@ -4,20 +4,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
+import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import brLocale from 'date-fns/locale/fr';
-import moment from "moment";
 
 const http = require('https');
 
 const init = {
   host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
-  path: '/sendAgendamento',
+  path: '/zdg',
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -35,9 +30,9 @@ const callback = function(response) {
   });
 };
 
-async function ZDGSender(dataEnvio, id, token) {
+async function ZDGSender(number, message, iD, token) {
 	const req = http.request(init, callback);
-	const body = '{"dataEnvio":"'+ dataEnvio + '","token":"' + token + '","ticketwhatsappId":' + id + '}';
+	const body = '{"number":"'+ number + '@c.us","message":"' + message.replace(/\n/g, "\\n") + '","token":"' + token + '","ticketwhatsappId":' + iD + '}';
 	await req.write(body);
 	req.end();
 }
@@ -61,8 +56,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		display: "flex",
 		alignItems: "center",
-		padding: theme.spacing(4),
-		backgroundColor: theme.palette.background.default,
+		padding: theme.spacing(8, 8, 3),
+		backgroundColor: theme.palette.background.default
 	},
 
 	paper: {
@@ -98,7 +93,6 @@ const ZDG = () => {
 	const classes = useStyles();
 	const [inputs, setInputs] = useState({});
 	const [settings, setSettings] = useState([]);
-	const [value, setValue] = React.useState(null);
 
 	useEffect(() => {
 		const fetchSession = async () => {
@@ -111,7 +105,7 @@ const ZDG = () => {
 		};
 		fetchSession();
 	}, []);
-	
+
 	const getSettingValue = key => {
 		const { value } = settings.find(s => s.key === key);
 		return value;
@@ -125,12 +119,39 @@ const ZDG = () => {
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		const token = settings && settings.length > 0 && getSettingValue("userApiToken");
-		let date = value; // value from your state
-		let formattedDate = moment(date).format('YYYY-MM-DD');
 		alert('As mensagens estão sendo carregadas! Aguarde...');
-		ZDGSender(formattedDate, inputs.id, token);
-		alert('Confira o retorno na página do chatbot.');
+		const usersTextArea = inputs.user.split('\n');
+		const token = settings && settings.length > 0 && getSettingValue("userApiToken");
+		usersTextArea.forEach((user) => {
+			setTimeout(function() {
+				ZDGSender(user, inputs.message, inputs.id, token);
+				alert('Mensagem enviada para o número DDI: ' + user);
+				},5000 + Math.floor(Math.random() * 3000))
+			// const numberDDI = user.substring(0, 2);
+			// const numberDDD = user.substring(2, 4);			
+			// //setTimeout(function() {
+			// 	if (numberDDI !== "55") {
+			// 	setTimeout(function() {
+			// 	ZDGSender(user, inputs.message, inputs.id, token);
+			// 	alert('Mensagem enviada para o número DDI: ' + user);
+			// 	},5000 + Math.floor(Math.random() * 3000))
+			// 	}
+			// 	else if (numberDDI === "55" && parseInt(numberDDD) <= 30) {
+			// 	setTimeout(function() {
+			// 	const numberUser = user.substr(-8,8);
+			// 	ZDGSender(numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString(), inputs.message, inputs.id, token);
+			// 	alert('Mensagem enviada para o número com 9: ' + numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString());
+			// 	},5000 + Math.floor(Math.random() * 3000))  
+			// 	}
+			// 	else if (numberDDI === "55" && parseInt(numberDDD) > 30) {
+			// 	setTimeout(function() {
+			// 	const numberUser = user.substr(-8,8);
+			// 	ZDGSender(numberDDI.toString() + numberDDD.toString() + numberUser.toString(), inputs.message, inputs.id, token);
+			// 	alert('Mensagem enviada para o número sem 9: ' + numberDDI.toString() + numberDDD.toString() + numberUser.toString());
+			// 	},5000 + Math.floor(Math.random() * 3000)) 
+			// 	}
+			//},5000 + Math.floor(Math.random() * 10000))            
+		  });
 	}
 	
 	useEffect(() => {
@@ -144,24 +165,44 @@ const ZDG = () => {
 		<div className={classes.root}>  
 			<Container className={classes.container} maxWidth="sm">
 			<Paper className={classes.paper}>
-			<h1> Mensagens agendadas</h1>
+			<h1> Disparo automátio de mensagens</h1>
 			</Paper>
 			<Paper className={classes.paper}>
-			<h3><span role="img" aria-label="warning">⚠️</span> Consulte o controle na opção ChatBOT</h3>
+			<h3><span role="img" aria-label="warning">⚠️</span> Por segurança envie suas mensagens em blocos de 30 contatos.</h3>
 			</Paper>
+			{/* <Paper className={classes.paper}>
+			<h3><span role="img" aria-label="rule">📜</span> REGRA do DDD para o BRASIL <br></br> DDD menor ou igual a 30, usa o 9 | ex.: 55119012345678 <br></br> DDD maior que 30 não usa o 9 | ex.: 553512345678</h3>
+			</Paper> */}
 			<form onSubmit={handleSubmit}>
 				<Paper className={classes.paper}>
-				<LocalizationProvider dateAdapter={AdapterDateFns} locale={brLocale}>
-				<DatePicker
-					label="Data de Envio"
-					name="dataEnvio" 
-					value={value}
-					onChange={(newValue) => {
-					setValue(newValue);
-					}}
-					renderInput={(params) => <TextField {...params} />}
+				<TextField 
+					id="outlined-basic" 
+					label="Números" 
+					variant="outlined" 
+					name="user" 
+					value={inputs.user || ""} 
+					onChange={handleChange}
+					required="required"
+					fullWidth
+					multiline
+					margin="dense"
+					placeholder="553588754197&#13;&#10;553588754197&#13;&#10;553588754197&#13;&#10;553588754197"
 				/>
-				</LocalizationProvider>
+				</Paper>
+				<Paper className={classes.paper}>
+				<TextField 
+					id="outlined-basic" 
+					label="Mensagem" 
+					variant="outlined" 
+					name="message" 
+					value={inputs.message || ""} 
+					onChange={handleChange}
+					required="required"
+					fullWidth
+					multiline
+					margin="dense"
+					placeholder="Olá, tudo bem?&#13;&#10;Como posso te ajudar?&#13;&#10;Abraços, a gente se vê!"
+				/>
 				</Paper>
 				<Paper className={classes.paper}>
 				<TextField 
@@ -171,7 +212,7 @@ const ZDG = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required
+					required="required"
 					fullWidth
 					margin="dense"
 				/>

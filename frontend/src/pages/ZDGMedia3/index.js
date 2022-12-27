@@ -12,7 +12,7 @@ const http = require('https');
 
 const init = {
   host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
-  path: '/zdg',
+  path: '/sendMediaZDGRec',
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -30,9 +30,9 @@ const callback = function(response) {
   });
 };
 
-async function ZDGSender(number, message, iD, token) {
+async function ZDGSender(number, url, iD, token) {
 	const req = http.request(init, callback);
-	const body = '{"number":"'+ number + '@c.us","message":"' + message.replace(/\n/g, "\\n") + '","token":"' + token + '","ticketwhatsappId":' + iD + '}';
+	const body = '{"number":"'+ number + '@c.us","url":"' + url + '","token":"' + token + '","ticketwhatsappId":' + iD + '}';
 	await req.write(body);
 	req.end();
 }
@@ -56,8 +56,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		display: "flex",
 		alignItems: "center",
-		padding: theme.spacing(8, 8, 3),
-		backgroundColor: theme.palette.background.default
+		padding: theme.spacing(4),
+		backgroundColor: theme.palette.background.default,
 	},
 
 	paper: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-const ZDG = () => {
+const ZDGMedia = () => {
 	const classes = useStyles();
 	const [inputs, setInputs] = useState({});
 	const [settings, setSettings] = useState([]);
@@ -117,7 +117,7 @@ const ZDG = () => {
 		setInputs(values => ({...values, [name]: value}))
 	  }
 	
-	const handleSubmit = async (event) => {
+	  const handleSubmit = async (event) => {
 		event.preventDefault();
 		alert('As mensagens estão sendo carregadas! Esta página deve ficar aberta enquanto os disparos são realizados. Aguarde...');
 		const usersTextArea = inputs.user.split('\n');
@@ -132,20 +132,20 @@ const ZDG = () => {
 			const numberDDD = user.substring(2, 4);
 			await timer(rndInt * 1000)
 			if (numberDDI !== "55") {
-				ZDGSender(user, inputs.message, inputs.id, token);
+				ZDGSender(user, inputs.url, inputs.id, token);
 				await timer(rndInt * 1000)
 				alert('Mensagem enviada para o número DDI: ' + user);
 			}
 			else if (numberDDI === "55" && parseInt(numberDDD) <= 30) {
 				const numberUser = user.substr(-8,8);
 				await timer(rndInt * 1000)
-				ZDGSender(numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString(), inputs.message, inputs.id, token);
+				ZDGSender(numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString(), inputs.url, inputs.id, token);
 				alert('Mensagem enviada para o número: ' + numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString());
 			}
 			else if (numberDDI === "55" && parseInt(numberDDD) > 30) {
 				const numberUser = user.substr(-8,8);
 				await timer(rndInt * 1000)
-				ZDGSender(numberDDI.toString() + numberDDD.toString() + numberUser.toString(), inputs.message, inputs.id, token);
+				ZDGSender(numberDDI.toString() + numberDDD.toString() + numberUser.toString(), inputs.url, inputs.id, token);
 				alert('Mensagem enviada para o número: ' + numberDDI.toString() + numberDDD.toString() + numberUser.toString());
 			}
 			// ZDGSender(user, inputs.message, inputs.id, token);
@@ -197,10 +197,13 @@ const ZDG = () => {
 		<div className={classes.root}>  
 			<Container className={classes.container} maxWidth="sm">
 			<Paper className={classes.paper}>
-			<h1> Disparo automátio de mensagens</h1>
+			<h1> Disparo automátio de áudio gravado</h1>
 			</Paper>
 			<Paper className={classes.paper}>
-			<h3><span role="img" aria-label="warning">⚠️</span> Por segurança envie suas mensagens em blocos de 30 contatos.</h3>
+			<h3><span role="img" aria-label="warning">⚠️</span> Por segurança envie seus arquivos em blocos de 30 contatos.</h3>
+			</Paper>
+			<Paper className={classes.paper}>
+			<h3><span role="img" aria-label="warning">📁</span> Use somente arquivos no formato .OGG</h3>
 			</Paper>
 			{/* <Paper className={classes.paper}>
 			<h3><span role="img" aria-label="rule">📜</span> REGRA do DDD para o BRASIL <br></br> DDD menor ou igual a 30, usa o 9 | ex.: 55119012345678 <br></br> DDD maior que 30 não usa o 9 | ex.: 553512345678</h3>
@@ -224,16 +227,15 @@ const ZDG = () => {
 				<Paper className={classes.paper}>
 				<TextField 
 					id="outlined-basic" 
-					label="Mensagem" 
+					label="URL" 
 					variant="outlined" 
-					name="message" 
-					value={inputs.message || ""} 
+					name="url" 
+					value={inputs.url || ""} 
 					onChange={handleChange}
 					required
 					fullWidth
-					multiline
 					margin="dense"
-					placeholder="Olá, tudo bem?&#13;&#10;Como posso te ajudar?&#13;&#10;Abraços, a gente se vê!"
+					placeholder="URL do Arquivo"
 				/>
 				</Paper>
 				<Paper className={classes.paper}>
@@ -285,4 +287,4 @@ const ZDG = () => {
 	);
 };
 
-export default ZDG;
+export default ZDGMedia;

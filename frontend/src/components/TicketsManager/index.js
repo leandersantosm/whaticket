@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
   tabsHeader: {
     flex: "none",
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "#eee",
   },
 
   settingsIcon: {
@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: theme.palette.background.paper,
+    background: "#fafafa",
     padding: theme.spacing(1),
   },
 
   serachInputWrapper: {
     flex: 1,
-    backgroundColor: theme.palette.background.default,
+    background: "#fff",
     display: "flex",
     borderRadius: 40,
     padding: 4,

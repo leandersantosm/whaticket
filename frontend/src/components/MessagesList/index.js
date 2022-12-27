@@ -26,6 +26,7 @@ import VcardPreview from "../VcardPreview";
 import LocationPreview from "../LocationPreview";
 import ModalImageCors from "../ModalImageCors";
 import MessageOptionsMenu from "../MessageOptionsMenu";
+import whatsBackground from "../../assets/wa-background.png";
 
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
@@ -34,12 +35,11 @@ import {CSVLink} from 'react-csv';
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/zdgSyncMessageUser',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -47,9 +47,8 @@ const init = {
 };
 
 const init2 = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/zdgGetWppId',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -57,9 +56,8 @@ const init2 = {
 };
 
 const init3 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgSendEmailAttach',
-	port: 8080,
   	method: 'POST',
   	headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -98,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   messagesList: {
-    backgroundImage: theme.backgroundImage,
+    backgroundImage: `url(${whatsBackground})`,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
@@ -319,7 +317,6 @@ const useStyles = makeStyles((theme) => ({
 		position: "relative",
     marginLeft: "2px",
     marginRight: "2px",
-    marginTop: "5px",
     [theme.breakpoints.down("sm")]: {
       display: "none"
     },
@@ -803,7 +800,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
   return (
     <div className={classes.messagesListWrapper}>
       <Box className={classes.box}>
-      <Grid container spacing={0} style={{ display:'flex', alignItems:'center', textAlign: 'center', paddingBottom:'10px'}}>
+      <Grid container spacing={0} style={{ display:'flex', alignItems:'center', textAlign: 'center', backgroundColor:'#ebebeb', paddingBottom:'10px'}}>
         <Grid item xs={12} md={2} sm={2}>
           <Button
           style={{fontSize:"10px"}}
@@ -845,7 +842,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
           </Button>
         </Grid>
         <Grid item xs={12} md={3} sm={4}>
-          <CSVLink style={{ textDecoration:'none'}} separator=";" filename={'zdg.csv'} data={messagesList.map((message) => ({ body: message.body, id: message.id, fromMe: message.fromMe, quoted : message.quotedMsg, isDel: message.isDeleted, mediaUrl : message.mediaUrl, type: message.mediaType, created : message.createdAt}))}>
+          <CSVLink style={{ textDecoration:'none', backgroundColor:'#ebebeb'}} separator=";" filename={'zdg.csv'} data={messagesList.map((message) => ({ body: message.body, id: message.id, fromMe: message.fromMe, quoted : message.quotedMsg, isDel: message.isDeleted, mediaUrl : message.mediaUrl, type: message.mediaType, created : message.createdAt}))}>
             <Button
             style={{fontSize:"10px"}}
             variant="contained"

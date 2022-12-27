@@ -8,12 +8,11 @@ import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button';
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-  host: 'localhost',
+  host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
   path: '/sendMedia',
-  port: 8080,
   method: 'POST',
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -39,8 +38,7 @@ async function ZDGSender(number, url, title, iD, token) {
 }
 
 const init2 = {
-	host: 'localhost',
-	port: 8080,
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/whatsappzdg'
   };
   
@@ -119,37 +117,73 @@ const ZDGMedia = () => {
 		setInputs(values => ({...values, [name]: value}))
 	  }
 	
-	const handleSubmit = (event) => {
+	  const handleSubmit = async (event) => {
 		event.preventDefault();
-		alert('As mensagens estão sendo carregadas! Aguarde...');
+		alert('As mensagens estão sendo carregadas! Esta página deve ficar aberta enquanto os disparos são realizados. Aguarde...');
 		const usersTextArea = inputs.user.split('\n');
 		const token = settings && settings.length > 0 && getSettingValue("userApiToken");
-		usersTextArea.forEach((user) => {
+		const timer = ms => new Promise(res => setTimeout(res, ms))
+		function randomIntFromInterval(min, max) {
+			return Math.floor(Math.random() * (max - min + 1) + min)
+		}
+		for (const user of usersTextArea){
+			const rndInt = randomIntFromInterval(inputs.min, inputs.max)
 			const numberDDI = user.substring(0, 2);
-			const numberDDD = user.substring(2, 4);			
-			//setTimeout(function() {
+			const numberDDD = user.substring(2, 4);
+			await timer(rndInt * 1000)
 			if (numberDDI !== "55") {
-				setTimeout(function() {
 				ZDGSender(user, inputs.url, inputs.title, inputs.id, token);
+				await timer(rndInt * 1000)
 				alert('Mensagem enviada para o número DDI: ' + user);
-				},5000 + Math.floor(Math.random() * 3000))
 			}
 			else if (numberDDI === "55" && parseInt(numberDDD) <= 30) {
-				setTimeout(function() {
 				const numberUser = user.substr(-8,8);
+				await timer(rndInt * 1000)
 				ZDGSender(numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString(), inputs.url, inputs.title, inputs.id, token);
-				alert('Mensagem enviada para o número com 9: ' + numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString());
-				},5000 + Math.floor(Math.random() * 3000))  
+				alert('Mensagem enviada para o número: ' + numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString());
 			}
 			else if (numberDDI === "55" && parseInt(numberDDD) > 30) {
-				setTimeout(function() {
 				const numberUser = user.substr(-8,8);
+				await timer(rndInt * 1000)
 				ZDGSender(numberDDI.toString() + numberDDD.toString() + numberUser.toString(), inputs.url, inputs.title, inputs.id, token);
-				alert('Mensagem enviada para o número sem 9: ' + numberDDI.toString() + numberDDD.toString() + numberUser.toString());
-				},5000 + Math.floor(Math.random() * 3000)) 
+				alert('Mensagem enviada para o número: ' + numberDDI.toString() + numberDDD.toString() + numberUser.toString());
 			}
-				//},5000 + Math.floor(Math.random() * 10000))              
-		  });
+			// ZDGSender(user, inputs.message, inputs.id, token);
+			// alert(rndInt + ' Mensagem enviada para o número DDI: ' + user);
+		}
+
+		// usersTextArea.forEach(async (user) => {
+		// 	const numberDDI = user.substring(0, 2);
+		// 	const numberDDD = user.substring(2, 4);
+		// 	const rndInt = randomIntFromInterval(1, 6)
+		// 	console.log(rndInt)		
+			
+		// 	setTimeout(function() {
+		// 		if (numberDDI !== "55") {
+		// 		setTimeout(function() {
+		// 		ZDGSender(user, inputs.message, inputs.id, token);
+		// 		await timer(rndInt * 1000)
+		// 		alert(rndInt + 'Mensagem enviada para o número DDI: ' + user);
+		// 		},5000 + Math.floor(Math.random() * 3000))
+		// 		}
+		// 		else if (numberDDI === "55" && parseInt(numberDDD) <= 30) {
+		// 		setTimeout(function() {
+		// 		const numberUser = user.substr(-8,8);
+		// 		await timer(rndInt * 1000)
+		// 		ZDGSender(numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString(), inputs.message, inputs.id, token);
+		// 		alert(rndInt + 'Mensagem enviada para o número com 9: ' + numberDDI.toString() + numberDDD.toString() + "9" + numberUser.toString());
+		// 		},5000 + Math.floor(Math.random() * 3000))  
+		// 		}
+		// 		else if (numberDDI === "55" && parseInt(numberDDD) > 30) {
+		// 		setTimeout(function() {
+		// 		const numberUser = user.substr(-8,8);
+		// 		await timer(rndInt * 1000)
+		// 		ZDGSender(numberDDI.toString() + numberDDD.toString() + numberUser.toString(), inputs.message, inputs.id, token);
+		// 		alert(rndInt + 'Mensagem enviada para o número sem 9: ' + numberDDI.toString() + numberDDD.toString() + numberUser.toString());
+		// 		},5000 + Math.floor(Math.random() * 3000)) 
+		// 		}
+		// 	},5000 + Math.floor(Math.random() * 10000))            
+		// });
 	}
 	
 	useEffect(() => {
@@ -180,7 +214,7 @@ const ZDGMedia = () => {
 					name="user" 
 					value={inputs.user || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					multiline
 					margin="dense"
@@ -195,7 +229,7 @@ const ZDGMedia = () => {
 					name="url" 
 					value={inputs.url || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="URL do Arquivo"
@@ -209,7 +243,7 @@ const ZDGMedia = () => {
 					name="title" 
 					value={inputs.title || ""} 
 					onChange={handleChange}
-					required="required"
+					required
 					fullWidth
 					margin="dense"
 					placeholder="URL do Arquivo"
@@ -223,7 +257,31 @@ const ZDGMedia = () => {
 					name="id" 
 					value={inputs.id || ""} 
 					onChange={handleChange}
-					required="required"
+					required
+					fullWidth
+					margin="dense"
+				/>
+				</Paper>
+				<Paper className={classes.paper}>
+				<TextField style={{marginRight: 5}}
+					id="outlined-basic" 
+					label="Intervalo minímo (Segundos)" 
+					variant="outlined" 
+					name="min" 
+					value={inputs.min || ""} 
+					onChange={handleChange}
+					required
+					fullWidth
+					margin="dense"
+				/>
+				<TextField style={{marginLeft: 5}}
+					id="outlined-basic" 
+					label="Intervalo máximo (Segundos)" 
+					variant="outlined" 
+					name="max" 
+					value={inputs.max || ""} 
+					onChange={handleChange}
+					required
 					fullWidth
 					margin="dense"
 				/>

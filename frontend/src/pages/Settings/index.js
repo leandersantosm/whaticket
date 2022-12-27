@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		alignItems: "center",
 		padding: theme.spacing(8, 8, 3),
-		backgroundColor: theme.palette.background.default
 	},
 
 	paper: {
@@ -122,8 +121,8 @@ const Settings = () => {
 							{i18n.t("settings.settings.userCreation.options.disabled")}
 						</option>
 					</Select>
+
 				</Paper>
-							
 
 				<Paper className={classes.paper}>
 					<TextField

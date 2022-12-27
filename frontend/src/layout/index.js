@@ -217,7 +217,7 @@ const LoggedInLayout = ({ children }) => {
             noWrap
             className={classes.title}
           >
-            Comunidade ZDG
+            WhaTicket
           </Typography>
           {user.id && <NotificationsPopOver />}
 

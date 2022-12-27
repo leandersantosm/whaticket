@@ -12,12 +12,11 @@ import ButtonWithSpinner from "../ButtonWithSpinner";
 import toastError from "../../errors/toastError";
 import { AuthContext } from "../../context/Auth/AuthContext";
 
-const http = require('http');
+const http = require('https');
 
 const init = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgProtocolo',
-	port: 8080,
   	method: 'POST',
   	headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -25,7 +24,7 @@ const init = {
 };
 
 const init2 = {
-	host: 'localhost',
+	host: process.env.REACT_APP_BACKEND_URL.split("//")[1],
 	path: '/zdgSendEmail',
 	port: 8080,
   	method: 'POST',
@@ -130,6 +129,8 @@ const TicketActionButtons = ({ ticket }) => {
 				  } catch (err) {
 					toastError(err);
 				  }
+				// const { data } = await api.get("/tickets/" + ticketId);
+				// ZDGEmail('Ticket '+ ticketId + ' acaba de ser finalizado.', 'O atendente acaba de fechar o ticket' + ticketId + '\nNúmero de contato: ' + data.contact.number + '\nNome ' + data.contact.name + '\nHorário ' + hour + ':' + minutes )
 			} 
 			else {
 				await api.put(`/tickets/${ticket.id}`, {
